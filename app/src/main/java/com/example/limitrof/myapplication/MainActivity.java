@@ -7,14 +7,36 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private ActionBarDrawerToggle toggle;
+    private RecyclerView recyclerView;
+
+    private void initRecycleView(){
+        recyclerView=(RecyclerView) findViewById(R.id.list_of_expenses);
+        //mast set layout-manager ror work with layouts
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        ExpensesAdapter expensesAdapter=new ExpensesAdapter(getExpenses());
+        recyclerView.setAdapter(expensesAdapter);
+    }
+    private List<Expense> getExpenses(){
+        List<Expense> expenses = new ArrayList<>();
+        expenses.add(new Expense("Cinema","120"));
+        expenses.add(new Expense("Cinema2","9120"));
+        expenses.add(new Expense("Cinema3","8120"));
+        expenses.add(new Expense("Cinema4","7120"));
+        return expenses;
+    }
     @Override
     public void onBackPressed() {
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
