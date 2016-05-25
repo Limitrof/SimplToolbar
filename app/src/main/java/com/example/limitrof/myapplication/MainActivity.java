@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         setupActionBar();
         setupDrawerLayout();
+        initRecycleView();
     }
 
     private void setupActionBar() {
