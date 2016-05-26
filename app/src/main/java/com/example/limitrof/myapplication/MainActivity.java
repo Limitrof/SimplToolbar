@@ -1,6 +1,9 @@
 package com.example.limitrof.myapplication;
 
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -23,11 +26,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private RecyclerView recyclerView;
 
     private void initRecycleView(){
-        recyclerView=(RecyclerView) findViewById(R.id.list_of_expenses);
+       /* recyclerView=(RecyclerView) findViewById(R.id.list_of_expenses);
         //mast set layout-manager ror work with layouts
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         ExpensesAdapter expensesAdapter=new ExpensesAdapter(getExpenses());
-        recyclerView.setAdapter(expensesAdapter);
+        recyclerView.setAdapter(expensesAdapter);*/
     }
     private List<Expense> getExpenses(){
         List<Expense> expenses = new ArrayList<>();
@@ -52,8 +55,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         setupActionBar();
         setupDrawerLayout();
-        initRecycleView();
+        //initRecycleView();
+        if(savedInstanceState == null){
+            replaceFragment(new ExpensesFragment());
+        }
     }
+//for work with activity
+private void replaceFragment(Fragment fragment){
+    String backStackName = fragment.getClass().getName();
+    FragmentManager manager = getSupportFragmentManager();
+    boolean fragmentPopped = manager.popBackStackImmediate(backStackName,0);
+    if(! fragmentPopped && manager.findFragmentByTag(backStackName) != null){
+        FragmentTransaction ft = manager.beginTransaction();
+        ft.replace(R.id.main_container,fragment,backStackName);
+        ft.addToBackStack(backStackName);
+        ft.commit();
+    }
+}
 
     private void setupActionBar() {
         toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -78,6 +96,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(MenuItem item) {
         if (drawerLayout != null) {
             drawerLayout.closeDrawer(GravityCompat.START);
+        }
+        switch (item.getItemId()){
+            case R.id.drawer_expenses:
+                CategoriesFragment cfv = new CategoriesFragment();
+                replaceFragment(cfv);
+                break;
+            case R.id.drawer_categories:
+                CategoriesFragment cf = new CategoriesFragment();
+                replaceFragment(cf);
+                break;
+
         }
         return true;
 
