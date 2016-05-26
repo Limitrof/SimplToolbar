@@ -11,11 +11,10 @@ import android.view.ViewGroup;
 /**
  * Created by Impression on 26.05.2016.
  */
-public class CategoriesFragment extends Fragment {
+public class SettingsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.categories_fragment,container,false);
-        return rootView;
+        return inflater.inflate(R.layout.categories_fragment,container,false);
     }
 }

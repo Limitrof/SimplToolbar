@@ -23,10 +23,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
     private ActionBarDrawerToggle toggle;
-    private RecyclerView recyclerView;
+    //private RecyclerView recyclerView;
 
     private void initRecycleView(){
-       /* recyclerView=(RecyclerView) findViewById(R.id.list_of_expenses);
+      /*  recyclerView=(RecyclerView) findViewById(R.id.list_of_expenses);
         //mast set layout-manager ror work with layouts
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         ExpensesAdapter expensesAdapter=new ExpensesAdapter(getExpenses());
@@ -60,16 +60,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             replaceFragment(new ExpensesFragment());
         }
     }
-//for work with activity
+//method which get fragment  2.
 private void replaceFragment(Fragment fragment){
-    String backStackName = fragment.getClass().getName();
-    FragmentManager manager = getSupportFragmentManager();
-    boolean fragmentPopped = manager.popBackStackImmediate(backStackName,0);
-    if(! fragmentPopped && manager.findFragmentByTag(backStackName) != null){
-        FragmentTransaction ft = manager.beginTransaction();
-        ft.replace(R.id.main_container,fragment,backStackName);
-        ft.addToBackStack(backStackName);
-        ft.commit();
+    String backStackName = fragment.getClass().getName();// get name from fragment
+    FragmentManager manager = getSupportFragmentManager();// get object which stored history of the fragments using
+    boolean fragmentPopped = manager.popBackStackImmediate(backStackName,0);//pop the last fragment transition from the manager's fragment back stack. If there is nothing to pop, false is returned +  performs the operation immediately inside of the call
+    if( !fragmentPopped && manager.findFragmentByTag(backStackName) == null){//if chosen fragment not current (selected right now) && new fragment Name exist (not null)
+        FragmentTransaction ft = manager.beginTransaction();//starting transaction
+        ft.replace(R.id.main_container,fragment,backStackName);//at first transaction step - replace old fragment on NEW fragment (fragment) with name (backStackName)
+        ft.addToBackStack(backStackName);//at second transaction step - add new fragments name to stack (for using in future if "PREVIOUS" click)
+        ft.commit();//start both transaction steps
     }
 }
 
@@ -99,12 +99,20 @@ private void replaceFragment(Fragment fragment){
         }
         switch (item.getItemId()){
             case R.id.drawer_expenses:
-                CategoriesFragment cfv = new CategoriesFragment();
+                ExpensesFragment cfv = new ExpensesFragment();
                 replaceFragment(cfv);
                 break;
             case R.id.drawer_categories:
                 CategoriesFragment cf = new CategoriesFragment();
                 replaceFragment(cf);
+                break;
+            case R.id.drawer_statistics:
+                StatisticsFragment sf = new StatisticsFragment();
+                replaceFragment(sf);
+                break;
+            case R.id.drawer_settings:
+                SettingsFragment stf = new SettingsFragment();
+                replaceFragment(stf);
                 break;
 
         }
